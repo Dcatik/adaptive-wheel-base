@@ -105,9 +105,7 @@ For the full platform:
 
 Total controlled wheel DOF:
 
-\[
-4 \times 3 = 12
-\]
+4 times 3 = 12
 
 This makes the platform strongly overactuated compared to standard mobile robots.  
 That is both the main challenge and the main advantage of the project.
