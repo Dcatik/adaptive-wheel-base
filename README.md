@@ -1,3 +1,4 @@
+![Platform render]({8C72279A-69F7-4C5A-B617-29EA7F502FA3}.png)
 # 4W3DOF Mobile Robotic Platform
 
 > Four-wheel mobile robotic platform with active wheel modules: drive, steering, and vertical wheel positioning for terrain adaptation and body stabilization.
