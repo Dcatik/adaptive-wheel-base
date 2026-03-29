@@ -20,8 +20,6 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-a31f34?style=for-the-badge" alt="MIT license" />
   </a>
-  <a href="https://en.wikipedia.org/wiki/Swerve_drive">
-    <img src="https://img.shields.io/badge/Concept-Swerve__plus__Active_Suspension-0057b8?style=for-the-badge" alt="Concept" />
   </a>
   <a href="https://mujoco.readthedocs.io/en/stable/overview.html">
     <img src="https://img.shields.io/badge/Simulation-MuJoCo-111111?style=for-the-badge" alt="MuJoCo" />
@@ -272,12 +270,8 @@ adaptive-wheel-base/
   <a href="https://www.ros.org/">
     <img src="https://img.shields.io/badge/ROS-Robotics_Ecosystem-22314e?style=for-the-badge" alt="ROS" />
   </a>
-  <a href="https://en.wikipedia.org/wiki/Swerve_drive">
-    <img src="https://img.shields.io/badge/Drive-Swerve_Concept-0057b8?style=for-the-badge" alt="Swerve concept" />
-  </a>
 </p>
 
-This README is meant to function as the public front page of the project, while the more implementation-heavy work lives in dedicated feature branches.
 
 ---
 
