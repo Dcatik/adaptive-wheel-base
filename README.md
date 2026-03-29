@@ -20,7 +20,6 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-a31f34?style=for-the-badge" alt="MIT license" />
   </a>
-  </a>
   <a href="https://mujoco.readthedocs.io/en/stable/overview.html">
     <img src="https://img.shields.io/badge/Simulation-MuJoCo-111111?style=for-the-badge" alt="MuJoCo" />
   </a>
