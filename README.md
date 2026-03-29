@@ -1,249 +1,257 @@
-![Platform render]({8C72279A-69F7-4C5A-B617-29EA7F502FA3}.png)
+<div align="center">
+
 # 4W3DOF Mobile Robotic Platform
 
-> Four-wheel mobile robotic platform with active wheel modules: drive, steering, and vertical wheel positioning for terrain adaptation and body stabilization.
+<p>
+  <strong>A terrain-adaptive robotic base with four independent 3-DoF wheel modules</strong>
+</p>
 
-## Overview
+<p>
+  This repository is the main project hub for a modular mobile platform that combines drive, steering, and active vertical wheel positioning in a single chassis architecture.
+</p>
 
-This repository contains the design and development of a **4-wheel robotic platform** in which each wheel is implemented as an **independent 3-DOF module**.  
-Each wheel module provides:
+<p>
+  <a href="https://github.com/Dcatik/adaptive-wheel-base/tree/main">
+    <img src="https://img.shields.io/badge/Branch-main-2ea44f?style=for-the-badge" alt="Main branch" />
+  </a>
+  <a href="https://github.com/Dcatik/adaptive-wheel-base">
+    <img src="https://img.shields.io/badge/Repository-Adaptive_Wheel_Base-181717?style=for-the-badge&logo=github" alt="Repository" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-a31f34?style=for-the-badge" alt="MIT license" />
+  </a>
+  <a href="https://en.wikipedia.org/wiki/Swerve_drive">
+    <img src="https://img.shields.io/badge/Concept-Swerve__plus__Active_Suspension-0057b8?style=for-the-badge" alt="Concept" />
+  </a>
+  <a href="https://mujoco.readthedocs.io/en/stable/overview.html">
+    <img src="https://img.shields.io/badge/Simulation-MuJoCo-111111?style=for-the-badge" alt="MuJoCo" />
+  </a>
+</p>
 
-- **wheel rotation** for traction and motion
-- **wheel steering** for directional control
-- **wheel height adjustment** for active suspension and terrain adaptation
+<p>
+  <img src="{8C72279A-69F7-4C5A-B617-29EA7F502FA3}.png" alt="Platform render" width="900" />
+</p>
 
-As a result, the platform combines properties of:
+<p>
+  <a href="#project-overview">Overview</a> |
+  <a href="#platform-architecture">Architecture</a> |
+  <a href="#development-branches">Branches</a> |
+  <a href="#development-pipeline">Pipeline</a> |
+  <a href="#roadmap">Roadmap</a>
+</p>
 
-- classical wheeled robots
-- swerve-drive systems
-- active suspension platforms
-
-The main idea of the project is to create a **modular terrain-adaptive robotic base** that can maintain mobility, stability, and controllability on uneven surfaces while staying mechanically simpler and potentially cheaper than full legged systems.
-
----
-
-## Why this project
-
-Conventional wheeled robots are efficient and mechanically simple, but they have limited adaptability to complex terrain.  
-Legged robots handle terrain better, but they are much more expensive, mechanically complex, and difficult to develop.
-
-This project explores a **middle ground**:
-
-- better terrain handling than a regular wheeled chassis
-- better controllability than passive suspension
-- lower complexity than a full quadruped or humanoid locomotion system
-
-The platform is intended as a base for:
-
-- autonomous mobile robots
-- rough-terrain delivery robots
-- inspection robots
-- research in locomotion and mobile manipulation
-- experiments in active suspension and body stabilization
-
----
-
-## Platform concept
-
-The robot uses **4 independent wheel modules**.  
-Each module has 3 controlled degrees of freedom:
-
-### 1. Drive
-Wheel spinning generates longitudinal traction and allows the robot to move.
-
-### 2. Steering
-The wheel can rotate around a vertical axis, allowing the platform to:
-- turn with reduced slip
-- implement omnidirectional or near-omnidirectional motion strategies
-- improve maneuverability in tight spaces
-
-### 3. Vertical wheel positioning
-The wheel module can move vertically relative to the chassis.  
-This is the key feature of the platform. It enables:
-
-- adaptation to uneven ground
-- chassis leveling
-- pitch/roll compensation
-- improved wheel-ground contact
-- obstacle traversal strategies
-
-In practice, this means the robot can actively change its geometry instead of relying only on passive compliance.
+</div>
 
 ---
 
-## Main engineering goals
+## Project Overview
 
-The project is focused on the following technical goals:
+This project explores a middle ground between classical wheeled robots and fully legged systems.
 
-- design of a **rigid modular chassis**
-- implementation of **independent wheel modules**
-- development of a **controllable active suspension architecture**
-- future conversion from CAD model to **simulation model**
-- study of **kinematics, dynamics, and control**
-- validation of the concept in both simulation and physical prototype form
+Instead of relying on passive suspension alone, the platform uses **four independent wheel modules**, and each module provides:
 
----
+1. wheel rotation for traction
+2. steering for directional control
+3. vertical positioning for terrain adaptation and body leveling
 
-## Key features
-
-- **4-wheel architecture**
-- **3 DOF per wheel**
-- modular wheel assemblies
-- active body leveling capability
-- potential support for multiple motion modes
-- scalable mechanical concept for research and prototyping
-- suitable as a base for ROS2 / simulation / control experiments
+That gives the full robot **12 controlled wheel DoF**, which makes the platform both highly adaptable and significantly more interesting from a control and mechatronics standpoint than a conventional mobile base.
 
 ---
 
-## Degrees of freedom
+## Why This Platform Is Interesting
 
-For the full platform:
+| Aspect | Conventional wheeled robot | This platform |
+|:--|:--|:--|
+| Mobility efficiency | High | High |
+| Terrain adaptation | Limited | Actively adjustable |
+| Steering freedom | Usually fixed or limited | Independent per wheel |
+| Body attitude control | Mostly passive | Potentially active |
+| Mechanical complexity | Lower | Higher, but still below legged systems |
 
-- 4 wheel drive DOF
-- 4 wheel steering DOF
-- 4 wheel vertical DOF
-
-Total controlled wheel DOF:
-
-4 times 3 = 12
-
-This makes the platform strongly overactuated compared to standard mobile robots.  
-That is both the main challenge and the main advantage of the project.
-
-### Implications of this architecture
-
-**Advantages**
-- high adaptability
-- improved terrain compliance
-- better control of body attitude
-- redundancy for optimization-based control
-
-**Challenges**
-- mechanical complexity
-- actuator packaging
-- wiring and power distribution
-- control coordination between modules
-- higher mass and cost compared to simpler chassis
+<p align="center">
+  <strong>4 wheel modules</strong> |
+  <strong>3 DoF per module</strong> |
+  <strong>12 controlled wheel DoF</strong> |
+  <strong>terrain-adaptive chassis</strong>
+</p>
 
 ---
 
-## Expected control tasks
+## Platform Architecture
 
-This platform is intended for future implementation of several control layers:
+```mermaid
+flowchart LR
+    A[Mechanical chassis] --> B[4 wheel modules]
+    B --> C[Drive DoF]
+    B --> D[Steering DoF]
+    B --> E[Vertical DoF]
 
-### Low-level control
-- wheel velocity control
-- steering angle control
-- vertical actuator position / force control
+    C --> F[Traction and motion]
+    D --> G[Maneuverability]
+    E --> H[Body leveling and terrain adaptation]
+```
 
-### Mid-level control
-- chassis height control
-- roll and pitch stabilization
-- traction management
-- wheel-ground contact maintenance
-
-### High-level control
-- path tracking
-- terrain-adaptive motion planning
-- obstacle crossing strategies
-- optimization of wheel module configuration
+Each corner module is intended to behave like a compact mechatronic subsystem rather than a passive wheel assembly. That changes the robot from a standard chassis into a configurable locomotion platform.
 
 ---
 
-## Mechanical status
+## Development Branches
 
-At the current stage, the project includes a CAD-based mechanical platform concept with:
+The `main` branch is the project landing page and concept hub. The implementation work is split into focused branches:
 
-- rectangular chassis body
-- internal structural frame
-- four corner wheel modules
-- enclosed body layout
-- modular integration space for electronics, battery, sensors, and compute
+| Branch | Focus | Open |
+|:--|:--|:--|
+| `feature/urdf-to-mujoco-export` | URDF to MuJoCo conversion workflow, model export, MJCF preparation | [Open branch](https://github.com/Dcatik/adaptive-wheel-base/tree/feature/urdf-to-mujoco-export) |
+| `feature/electromechanical-control` | MuJoCo simulation, low-level controllers, wheel motor model, telemetry | [Open branch](https://github.com/Dcatik/adaptive-wheel-base/tree/feature/electromechanical-control) |
 
-The design direction prioritizes:
+<p align="center">
+  <a href="https://github.com/Dcatik/adaptive-wheel-base/tree/feature/urdf-to-mujoco-export">
+    <img src="https://img.shields.io/badge/Branch-URDF_to_MuJoCo_Export-0366d6?style=for-the-badge&logo=github" alt="URDF to MuJoCo export branch" />
+  </a>
+  <a href="https://github.com/Dcatik/adaptive-wheel-base/tree/feature/electromechanical-control">
+    <img src="https://img.shields.io/badge/Branch-Electromechanical_Control-f57c00?style=for-the-badge&logo=github" alt="Electromechanical control branch" />
+  </a>
+</p>
 
-- manufacturability
-- structural clarity
-- modularity
-- future access for prototyping and maintenance
+These branches reflect two major engineering tracks in the repository:
 
----
-
-## Planned software and simulation pipeline
-
-The long-term development path of the project is:
-
-1. **CAD development in SolidWorks**
-2. export of assembly structure to robot description format
-3. creation of a **URDF / MJCF / simulation model**
-4. integration with **ROS2**
-5. implementation of control architecture
-6. simulation on flat and uneven terrain
-7. development of physical prototype
-
-Possible simulation environments:
-
-- Gazebo
-- MuJoCo
-- Isaac Sim
-- custom dynamics environment
+- geometry and model conversion
+- simulation, actuation, and controller behavior
 
 ---
 
-## Possible applications
+## Engineering Goals
 
-This platform can be adapted for several use cases:
-
-- indoor/outdoor autonomous mobile robot
-- warehouse robot for non-ideal floors
-- inspection robot for industrial facilities
-- research platform for active suspension
-- robotic base for modular payloads
-- educational and academic mechatronics platform
+- design a rigid modular chassis with four independent adaptive wheel modules
+- keep the mechanical concept manufacturable and prototype-friendly
+- build a clean path from CAD to robot description and simulation
+- validate drive, steering, and height-control ideas in simulation first
+- prepare the platform for future ROS2, control, and hardware integration
 
 ---
 
-## Repository goals
+## Degrees Of Freedom
 
-This repository is not only a storage place for CAD files.  
-The goal is to turn it into a full engineering project containing:
+| Subsystem | Count |
+|:--|:--|
+| Wheel drive DoF | 4 |
+| Wheel steering DoF | 4 |
+| Vertical wheel DoF | 4 |
+| Total controlled wheel DoF | 12 |
 
-- mechanical design
-- actuator architecture
-- control logic
-- simulation models
-- documentation
-- prototype iteration history
+### Architectural implications
 
-In other words, this repository should evolve into a **complete development log of a terrain-adaptive mobile robotic platform**.
+Advantages:
+- high terrain adaptability
+- improved wheel-ground contact management
+- body pose control potential
+- redundancy for future optimization-based control
+
+Challenges:
+- mechanical packaging
+- wiring and power routing
+- actuator selection
+- coordinated control across all modules
+- mass, cost, and reliability tradeoffs
+
+---
+
+## Development Pipeline
+
+```mermaid
+flowchart TD
+    A[SolidWorks CAD] --> B[Robot description]
+    B --> C[URDF export]
+    C --> D[MuJoCo MJCF model]
+    D --> E[Controller experiments]
+    E --> F[Terrain and leveling simulation]
+    F --> G[Prototype iteration]
+```
+
+Planned simulation and software path:
+
+1. mechanical design in CAD
+2. export to robot description formats
+3. build simulation-ready URDF and MJCF representations
+4. develop control architecture for wheel drive, steering, and vertical actuation
+5. validate behavior before hardware implementation
+
+---
+
+## Intended Applications
+
+- rough-terrain mobile robotics
+- adaptive suspension research
+- robotic delivery bases for imperfect surfaces
+- locomotion and control experiments
+- educational mechatronics and robotics projects
+- modular payload carrier platforms
+
+---
+
+## Planned Repository Structure
+
+```text
+adaptive-wheel-base/
+|-- cad/                # SolidWorks parts, assemblies, exports
+|-- docs/               # Design notes, calculations, diagrams
+|-- robot_description/  # URDF and related assets
+|-- mujoco/             # MJCF models, renders, simulation media
+|-- control/            # Controllers and actuator models
+|-- sim/                # Simulation entry points and tooling
+|-- electronics/        # Wiring, power, drivers, BOM
+`-- README.md
+```
+
+---
+
+## Visual GitHub Extras
+
+<p align="center">
+  <a href="https://github.com/Dcatik">
+    <img height="165" src="https://github-readme-stats.vercel.app/api?username=Dcatik&show_icons=true&hide_border=true&theme=transparent" alt="Dcatik GitHub stats" />
+  </a>
+  <a href="https://github.com/Dcatik?tab=repositories">
+    <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Dcatik&layout=compact&hide_border=true&theme=transparent" alt="Top languages" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Dcatik/adaptive-wheel-base">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Dcatik&repo=adaptive-wheel-base&hide_border=true&theme=transparent" alt="Adaptive Wheel Base repo card" />
+  </a>
+</p>
 
 ---
 
 ## Roadmap
 
-### Phase 1 — Mechanical concept
-- [x] Initial chassis layout
-- [x] 4 wheel module architecture
+### Phase 1. Mechanical concept
+
+- [x] initial chassis layout
+- [x] 4-wheel module architecture
 - [x] body enclosure concept
 - [ ] actuator selection
 - [ ] bearing and transmission validation
 - [ ] mass estimation
 
-### Phase 2 — Modeling
+### Phase 2. Modeling
+
 - [ ] define kinematic structure
 - [ ] derive system constraints
 - [ ] export CAD to simulation-ready model
 - [ ] prepare simplified dynamic model
 
-### Phase 3 — Control
+### Phase 3. Control
+
 - [ ] wheel drive control
 - [ ] steering control
 - [ ] active height control
 - [ ] body leveling controller
 - [ ] terrain adaptation logic
 
-### Phase 4 — Prototype
+### Phase 4. Prototype
+
 - [ ] manufacturing-ready redesign
 - [ ] electronics integration
 - [ ] power system selection
@@ -252,16 +260,27 @@ In other words, this repository should evolve into a **complete development log 
 
 ---
 
-## Repository structure
+## References
 
-Suggested project structure:
+<p align="center">
+  <a href="https://mujoco.readthedocs.io/en/stable/overview.html">
+    <img src="https://img.shields.io/badge/MuJoCo-Overview-111111?style=for-the-badge" alt="MuJoCo overview" />
+  </a>
+  <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams">
+    <img src="https://img.shields.io/badge/GitHub-Mermaid_Diagrams-181717?style=for-the-badge&logo=github" alt="GitHub Mermaid diagrams" />
+  </a>
+  <a href="https://www.ros.org/">
+    <img src="https://img.shields.io/badge/ROS-Robotics_Ecosystem-22314e?style=for-the-badge" alt="ROS" />
+  </a>
+  <a href="https://en.wikipedia.org/wiki/Swerve_drive">
+    <img src="https://img.shields.io/badge/Drive-Swerve_Concept-0057b8?style=for-the-badge" alt="Swerve concept" />
+  </a>
+</p>
 
-```text
-.
-├── cad/                # SolidWorks assemblies, parts, exports
-├── docs/               # Design notes, схемы, изображения, расчёты
-├── simulation/         # URDF, MJCF, Gazebo/MuJoCo models
-├── control/            # Controllers and robotics software
-├── electronics/        # Wiring, power, motor drivers, BOM
-├── media/              # Renders, screenshots, videos
-└── README.md
+This README is meant to function as the public front page of the project, while the more implementation-heavy work lives in dedicated feature branches.
+
+---
+
+## License
+
+Distributed under the [MIT License](LICENSE).
