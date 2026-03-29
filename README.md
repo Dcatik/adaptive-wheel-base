@@ -173,21 +173,20 @@ Each wheel module has three controlled degrees of freedom:
 2. steering angle
 3. wheel rotation
 
-<details open>
-<summary><strong>1. Lift actuator</strong></summary>
+### 1. Lift actuator
 
 Implementation: [`control/linear_actuator.py`](control/linear_actuator.py)
 
 The lift controller is a bounded velocity command to the target height:
 
-```math
+$$
 u_z =
 \begin{cases}
 0, & |z_{ref} - z| \le \varepsilon \\
 v_{max}, & z_{ref} - z > \varepsilon \\
 -v_{max}, & z_{ref} - z < -\varepsilon
 \end{cases}
-```
+$$
 
 where:
 
@@ -198,30 +197,27 @@ where:
 
 This keeps the model simple, robust, and easy to tune for body-height experiments.
 
-</details>
-
-<details open>
-<summary><strong>2. Steering controller</strong></summary>
+### 2. Steering controller
 
 Implementation: [`control/steering_stepper.py`](control/steering_stepper.py)
 
 The steering loop computes torque from angular error with backlash compensation:
 
-```math
+$$
 e = \mathrm{wrap}(\delta_{ref} - \delta)
-```
+$$
 
-```math
+$$
 e_{eff} =
 \begin{cases}
 0, & |e| < \Delta_b \\
 e - \mathrm{sign}(e)\Delta_b, & |e| \ge \Delta_b
 \end{cases}
-```
+$$
 
-```math
+$$
 \tau = \mathrm{sat}\left(\eta_g \left(k_p e_{eff} + k_i \int e_{eff}\,dt - k_d \dot{\delta}\right)\right)
-```
+$$
 
 where:
 
@@ -233,22 +229,19 @@ where:
 
 In practice this is the most control-heavy part of the platform, because it mixes wrapping, backlash, saturation, and anti-windup concerns in a single loop.
 
-</details>
-
-<details open>
-<summary><strong>3. Wheel motor</strong></summary>
+### 3. Wheel motor
 
 Implementation: [`control/wheel_motor.py`](control/wheel_motor.py)
 
 The wheel motor is modeled as a DC motor:
 
-```math
+$$
 L \frac{di}{dt} = u - Ri - K_e \omega
-```
+$$
 
-```math
+$$
 \tau = K_t i
-```
+$$
 
 where:
 
@@ -261,8 +254,6 @@ where:
 - $K_t$ is the torque constant
 
 This gives the drive system a more realistic electromechanical response than a direct torque command.
-
-</details>
 
 ---
 
@@ -311,17 +302,6 @@ The telemetry view is especially useful when tuning current limits, torque satur
 
 ---
 
-## Roadmap
-
-- [ ] tighten steering error tolerance
-- [ ] stabilize turning in place
-- [ ] improve load distribution across lift modules
-- [ ] finalize body leveling control
-- [ ] clean up the fourth steering module geometry
-- [ ] add a cleaner operator interface
-
----
-
 ## References
 
 <p align="center">
@@ -338,9 +318,6 @@ The telemetry view is especially useful when tuning current limits, torque satur
     <img src="https://img.shields.io/badge/Python-venv-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python venv docs" />
   </a>
 </p>
-
-These links are here on purpose: GitHub renders both Mermaid diagrams and LaTeX math directly in Markdown, so this README can carry real engineering content instead of only screenshots and prose.
-
 ---
 
 ## License
