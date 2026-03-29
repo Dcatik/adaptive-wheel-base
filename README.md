@@ -160,7 +160,7 @@ The main simulation model lives at [`mujoco/mjcf/robot.xml`](mujoco/mjcf/robot.x
 If you want the quickest visual entry point, start with the wheel drive demo:
 
 ```bash
-python3 -m sim.run_wheel_motors
+python3 -m sim.manual_drive_test
 ```
 
 ---
