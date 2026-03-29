@@ -22,8 +22,18 @@
   </asset>
 
   <worldbody>
-    <body name="Body">
-      <inertial pos="-0.076051 1.9198 -0.60001" quat="0.707107 0 0 0.707107" mass="12.276" diaginertia="0.4497 0.24694 0.23048"/>
+  <geom name="ground"
+        type="plane"
+        pos="0 0 0"
+        size="5 5 0.1"
+        rgba="0.2 0.3 0.2 1"/>
+
+    <body name="Body" pos="0 0 -1.5">
+      <freejoint name="base_free"/>
+      <inertial pos="0 0 0"
+          quat="0.707107 0 0 0.707107"
+          mass="12.276"
+          diaginertia="0.4497 0.24694 0.23048"/>
       <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.75294 0.75294 0.75294 1" mesh="Body"/>
       <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="Body"/>
       <body name="Wheel_Leg_1" pos="-0.458962 0.672072 1.73208" quat="0.0334071 0.0334071 0.706317 0.706317">
@@ -32,7 +42,14 @@
         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="Wheel_Leg_1"/>
         <body name="Wheel_Arm_1" pos="-0.0811761 -0.0173248 0.151318" quat="0.706317 -0.706317 0.0334071 0.0334071">
           <inertial pos="1.0537e-06 2.1145e-07 0.064075" quat="0.707102 0 0 0.707112" mass="1.0657" diaginertia="0.0030328 0.0027869 0.00038231"/>
-          <joint name="Prismatic_Joint_1" pos="0 0 0" axis="0 0 -1" type="slide" range="0 0.1" actuatorfrcrange="-1500 1500" damping="0.1" frictionloss="5"/>
+          <joint name="Prismatic_Joint_1"
+            pos="0 0 0"
+            axis="0 0 -1"
+            type="slide"
+            range="0 0.1"
+            actuatorfrcrange="-1500 1500"
+            damping="0.1"
+            frictionloss="0"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.75294 0.75294 0.75294 1" mesh="Wheel_Arm_1"/>
           <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="Wheel_Arm_1"/>
           <body name="Wheel_Steering_1" pos="0 0 0.014">
@@ -43,7 +60,7 @@
             <body name="Wheel_Rotating_1" pos="-0.005 -0.03375 -0.13194" quat="-2.59734e-06 -2.59735e-06 0.707108 0.707105">
               <inertial pos="-6.70675e-07 5.15937e-08 0.0307772" quat="0.169392 0.686514 -0.169402 0.686519" mass="2.43384" diaginertia="0.00638308 0.00377995 0.0037798"/>
               <joint name="Rotating_Joint_1" pos="0 0 0" axis="0 0 -1" actuatorfrcrange="-6 6" damping="0.01" frictionloss="0.8"/>
-              <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_1"/>
+              <geom name="wheel_contact_1" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_1"/>
               <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_1"/>
             </body>
           </body>
@@ -55,7 +72,14 @@
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Leg_2"/>
         <body name="Wheel_Arm_2" pos="-0.0811761 -0.0173248 0.151318" quat="0.706317 -0.706317 0.0334071 0.0334071">
           <inertial pos="1.05372e-06 2.11453e-07 0.064075" quat="0.707102 0 0 0.707112" mass="1.06571" diaginertia="0.0030328 0.00278694 0.000382312"/>
-          <joint name="Prismatic_Joint_2" pos="0 0 0" axis="0 0 -1" type="slide" range="0 0.1" actuatorfrcrange="-1500 1500" damping="0.1" frictionloss="5"/>
+          <joint name="Prismatic_Joint_2"
+            pos="0 0 0"
+            axis="0 0 -1"
+            type="slide"
+            range="0 0.1"
+            actuatorfrcrange="-1500 1500"
+            damping="0.1"
+            frictionloss="0"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_2"/>
           <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_2"/>
           <body name="Wheel_Steering_2" pos="0 0 0.014">
@@ -66,7 +90,7 @@
             <body name="Wheel_Rotating_2" pos="-0.005 -0.032419 -0.13194" quat="-2.59734e-06 -2.59735e-06 0.707108 0.707105">
               <inertial pos="1.91665e-07 -6.55501e-07 0.0294464" quat="0.53265 0.465071 -0.532646 0.465061" mass="2.43384" diaginertia="0.00638308 0.00377995 0.0037798"/>
               <joint name="Rotating_Joint_2" pos="0 0 0" axis="0 0 -1" actuatorfrcrange="-6 6" damping="0.01" frictionloss="0.8"/>
-              <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_2"/>
+              <geom name="wheel_contact_2" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_2"/>
               <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_2"/>
             </body>
           </body>
@@ -78,7 +102,14 @@
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Leg_3"/>
         <body name="Wheel_Arm_3" pos="-0.0815305 -0.0173248 0.083695" quat="-0.0334071 0.0334071 0.706317 0.706317">
           <inertial pos="-1.05372e-06 -2.11453e-07 0.064075" quat="0.707102 0 0 0.707112" mass="1.06571" diaginertia="0.0030328 0.00278694 0.000382312"/>
-          <joint name="Prismatic_Joint_3" pos="0 0 0" axis="0 0 -1" type="slide" range="0 0.1" actuatorfrcrange="-1500 1500" damping="0.1" frictionloss="5"/>
+          <joint name="Prismatic_Joint_3"
+            pos="0 0 0"
+            axis="0 0 -1"
+            type="slide"
+            range="0 0.1"
+            actuatorfrcrange="-1500 1500"
+            damping="0.1"
+            frictionloss="0"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_3"/>
           <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_3"/>
           <body name="Wheel_Steering_3" pos="0 0 0.014">
@@ -89,7 +120,7 @@
             <body name="Wheel_Rotating_3" pos="0.005 0.03375 -0.13194" quat="-2.59734e-06 -2.59735e-06 0.707108 0.707105">
               <inertial pos="6.79132e-07 2.73946e-08 -0.0307772" quat="-0.169663 0.686447 0.169673 0.686452" mass="2.43384" diaginertia="0.00638308 0.00377995 0.0037798"/>
               <joint name="Rotating_Joint_3" pos="0 0 0" axis="0 0 1" actuatorfrcrange="-6 6" damping="0.01" frictionloss="0.8"/>
-              <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_3"/>
+              <geom name="wheel_contact_3" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_3"/>
               <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_3"/>
             </body>
           </body>
@@ -101,18 +132,27 @@
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Leg_4"/>
         <body name="Wheel_Arm_4" pos="-0.081531 -0.017325 0.083695" quat="-0.0334098 0.0334045 0.706319 0.706316">
           <inertial pos="-1.05372e-06 -2.11453e-07 0.064075" quat="0.707102 0 0 0.707112" mass="1.06571" diaginertia="0.0030328 0.00278694 0.000382312"/>
-          <joint name="Prismatic_Joint_4" pos="0 0 0" axis="0 0 -1" type="slide" range="0 0.1" actuatorfrcrange="-1500 1500" damping="0.1" frictionloss="5"/>
+          <joint name="Prismatic_Joint_4"
+            pos="0 0 0"
+            axis="0 0 -1"
+            type="slide"
+            range="0 0.1"
+            actuatorfrcrange="-1500 1500"
+            damping="0.1"
+            frictionloss="0"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_4"/>
           <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Arm_4"/>
           <body name="Wheel_Steering_4" pos="0.005 0.032419 -0.11794" quat="-2.59734e-06 -2.59735e-06 0.707108 0.707105">
             <inertial pos="0.00235452 0.0456977 -0.102074" quat="0.706789 0.0211871 -0.0211848 0.70679" mass="1.76193" diaginertia="0.00232397 0.00198197 0.00116748"/>
-            <joint name="Steering_Joint_4" pos="0 0 0" axis="0 -1 0" range="-1.047 1.047" actuatorfrcrange="-25.5 25.5" damping="0.01" frictionloss="0.8"/>
+            <joint name="Steering_Joint_4" pos="0.005000 0.117940 -0.032419" axis="0 -1 0"
+              range="-1.047 1.047" actuatorfrcrange="-25.5 25.5"
+              damping="0.01" frictionloss="0.8"/>
             <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Steering_4"/>
             <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Steering_4"/>
             <body name="Wheel_Rotating_4">
-              <inertial pos="6.81058e-07 4.71989e-08 -0.0294464" quat="-0.171316 0.686036 0.171326 0.686041" mass="2.43383" diaginertia="0.00638308 0.00377995 0.0037798"/>
+              <inertial pos="0.005 0.032419 -0.13194" quat="-0.171316 0.686036 0.171326 0.686041" mass="2.43383" diaginertia="0.00638308 0.00377995 0.0037798"/>
               <joint name="Rotating_Joint_4" pos="0 0 0" axis="0 0 1" actuatorfrcrange="-6 6" damping="0.01" frictionloss="0.8"/>
-              <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_4"/>
+              <geom name="wheel_contact_4" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_4"/>
               <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Wheel_Rotating_4"/>
             </body>
           </body>
@@ -120,4 +160,219 @@
       </body>
     </body>
   </worldbody>
+
+  <actuator>
+    <motor name="wheel_motor_1" joint="Rotating_Joint_1" gear="1" ctrllimited="true" ctrlrange="-20 20"/>
+    <motor name="wheel_motor_2" joint="Rotating_Joint_2" gear="1" ctrllimited="true" ctrlrange="-20 20"/>
+    <motor name="wheel_motor_3" joint="Rotating_Joint_3" gear="1" ctrllimited="true" ctrlrange="-20 20"/>
+    <motor name="wheel_motor_4" joint="Rotating_Joint_4" gear="1" ctrllimited="true" ctrlrange="-20 20"/>
+
+    <motor name="steering_motor_1" joint="Steering_Joint_1" gear="1"
+          ctrllimited="true" ctrlrange="-3 3"
+          forcelimited="true" forcerange="-3 3"/>
+    <motor name="steering_motor_2" joint="Steering_Joint_2" gear="1"
+          ctrllimited="true" ctrlrange="-3 3"
+          forcelimited="true" forcerange="-3 3"/>
+    <motor name="steering_motor_3" joint="Steering_Joint_3" gear="1"
+          ctrllimited="true" ctrlrange="-3 3"
+          forcelimited="true" forcerange="-3 3"/>
+    <motor name="steering_motor_4" joint="Steering_Joint_4" gear="1"
+          ctrllimited="true" ctrlrange="-3 3"
+          forcelimited="true" forcerange="-3 3"/>
+
+    <intvelocity name="lift_1"
+             joint="Prismatic_Joint_1"
+             kp="10000"
+             kv="10000"
+             actrange="0 0.1"
+             ctrllimited="true"
+             ctrlrange="-0.025 0.025"
+             forcelimited="true"
+             forcerange="-1500 1500"/>
+
+    <intvelocity name="lift_2"
+             joint="Prismatic_Joint_2"
+             kp="10000"
+             kv="10000"
+             actrange="0 0.1"
+             ctrllimited="true"
+             ctrlrange="-0.025 0.025"
+             forcelimited="true"
+             forcerange="-1500 1500"/>
+
+    <intvelocity name="lift_3"
+             joint="Prismatic_Joint_3"
+             kp="10000"
+             kv="10000"
+             actrange="0 0.1"
+             ctrllimited="true"
+             ctrlrange="-0.025 0.025"
+             forcelimited="true"
+             forcerange="-1500 1500"/>
+
+    <intvelocity name="lift_4"
+             joint="Prismatic_Joint_4"
+             kp="10000"
+             kv="10000"
+             actrange="0 0.1"
+             ctrllimited="true"
+             ctrlrange="-0.025 0.025"
+             forcelimited="true"
+             forcerange="-1500 1500"/>
+  </actuator>
+  <contact>
+    <exclude body1="Body" body2="Wheel_Leg_1"/>
+    <exclude body1="Body" body2="Wheel_Leg_2"/>
+    <exclude body1="Body" body2="Wheel_Leg_3"/>
+    <exclude body1="Body" body2="Wheel_Leg_4"/>
+    <exclude body1="Body" body2="Wheel_Arm_1"/>
+    <exclude body1="Body" body2="Wheel_Arm_2"/>
+    <exclude body1="Body" body2="Wheel_Arm_3"/>
+    <exclude body1="Body" body2="Wheel_Arm_4"/>
+    <exclude body1="Body" body2="Wheel_Steering_1"/>
+    <exclude body1="Body" body2="Wheel_Steering_2"/>
+    <exclude body1="Body" body2="Wheel_Steering_3"/>
+    <exclude body1="Body" body2="Wheel_Steering_4"/>
+    <exclude body1="Body" body2="Wheel_Rotating_1"/>
+    <exclude body1="Body" body2="Wheel_Rotating_2"/>
+    <exclude body1="Body" body2="Wheel_Rotating_3"/>
+    <exclude body1="Body" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Leg_2"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Leg_3"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Leg_4"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Arm_1"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Arm_2"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Leg_1" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Leg_3"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Leg_4"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Arm_1"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Arm_2"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Leg_2" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Leg_4"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Arm_1"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Arm_2"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Leg_3" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Arm_1"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Arm_2"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Leg_4" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Arm_2"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Arm_1" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Arm_3"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Arm_2" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Arm_4"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Arm_3" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Steering_1"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Arm_4" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Steering_2"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Steering_1" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Steering_3"/>
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Steering_2" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Steering_3" body2="Wheel_Steering_4"/>
+    <exclude body1="Wheel_Steering_3" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Steering_3" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Steering_3" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Steering_3" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Steering_4" body2="Wheel_Rotating_1"/>
+    <exclude body1="Wheel_Steering_4" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Steering_4" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Steering_4" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Rotating_1" body2="Wheel_Rotating_2"/>
+    <exclude body1="Wheel_Rotating_1" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Rotating_1" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Rotating_2" body2="Wheel_Rotating_3"/>
+    <exclude body1="Wheel_Rotating_2" body2="Wheel_Rotating_4"/>
+
+    <exclude body1="Wheel_Rotating_3" body2="Wheel_Rotating_4"/>
+  </contact>
+
+  <option integrator="implicitfast"/>
 </mujoco>

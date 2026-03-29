@@ -1,35 +1,180 @@
-# URDF to MuJoCo User Guide
+# Adaptive Wheel Base
 
-## Goal
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)]()
+[![MuJoCo](https://img.shields.io/badge/Physics-MuJoCo-black)]()
+[![Status](https://img.shields.io/badge/Status-Prototype-orange)]()
 
-Convert a robot model from URDF to MuJoCo MJCF inside a GitHub project, open it in the MuJoCo viewer, and save a final screenshot as `mujoco/result.png`.
+Simulation of a 4-module adaptive robotic platform in **MuJoCo**.
+
+Each module has 3 DoF:
+
+- **lift** - vertical motion
+- **steering** - wheel heading
+- **wheel rotation** - traction
+
+The repository contains the model, low-level controllers, and standalone simulation scripts for lift, steering, and wheel drive.
 
 ---
 
-## Prerequisites
+## Demo
 
-- Ubuntu 24.04
-- VS Code
-- Git repository already cloned
-- Python 3 installed
-- A valid URDF file
-- STL mesh files for the robot
+[![Demo video](mujoco/result.png)](test.mp4)
+
+> Click the image to open the simulation video.
 
 ---
 
-## Step 1. Create `requirements.txt`
+## Project structure
 
-Create a file named `requirements.txt` in the project root.
-
-```txt
-mujoco
+```text
+adaptive-wheel-base/
+├── control/
+│   ├── linear_actuator.py
+│   ├── steering_stepper.py
+│   └── wheel_motor.py
+├── mujoco/
+│   ├── mjcf/
+│   │   └── robot.xml
+│   └── result.png
+├── robot_description/
+├── sim/
+│   ├── manual_drive_test.py
+│   ├── run_lift_actuators.py
+│   ├── run_steering_motors.py
+│   ├── run_wheel_motors.py
+│   └── telemetry.py
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## Step 2. Create and activate a virtual environment
+## Model
 
-From the project root:
+Main MuJoCo model:
+
+```text
+mujoco/mjcf/robot.xml
+```
+
+The platform is built from four wheel modules.
+Each module includes:
+
+1. a **prismatic joint** for vertical motion
+2. a **steering revolute joint**
+3. a **wheel revolute joint**
+
+---
+
+## Control models
+
+### 1. Lift actuator
+
+The lift controller is a bounded velocity command to the target height:
+
+```math
+u_z =
+\begin{cases}
+0, & |z_{ref} - z| \le \varepsilon \\
+v_{max}, & z_{ref} - z > \varepsilon \\
+-v_{max}, & z_{ref} - z < -\varepsilon
+\end{cases}
+```
+
+where:
+
+* (z) - current lift position
+* (z_{ref}) - target lift position
+* (v_{max}) - maximum actuator speed
+* (\varepsilon) - deadband
+
+Implementation: `control/linear_actuator.py`
+
+---
+
+### 2. Steering controller
+
+The steering loop computes torque from angular error with backlash compensation:
+
+```math
+e = \mathrm{wrap}(\delta_{ref} - \delta)
+```
+
+```math
+e_{eff} =
+\begin{cases}
+0, & |e| < \Delta_b \\
+e - \mathrm{sign}(e)\Delta_b, & |e| \ge \Delta_b
+\end{cases}
+```
+
+```math
+\tau = \mathrm{sat}\left(\eta_g \left(k_p e_{eff} + k_i \int e_{eff}\,dt - k_d \dot{\delta}\right)\right)
+```
+
+where:
+
+* (\delta) - current steering angle
+* (\delta_{ref}) - target steering angle
+* (\Delta_b) - backlash zone
+* (\eta_g) - gearbox efficiency
+* (\tau) - steering torque
+
+Implementation: `control/steering_stepper.py`
+
+---
+
+### 3. Wheel motor
+
+The wheel motor is modeled as a DC motor:
+
+```math
+L \frac{di}{dt} = u - Ri - K_e \omega
+```
+
+```math
+\tau = K_t i
+```
+
+where:
+
+* (u) - motor voltage
+* (i) - current
+* (\omega) - angular velocity
+* (R) - resistance
+* (L) - inductance
+* (K_e) - back-EMF constant
+* (K_t) - torque constant
+
+Implementation: `control/wheel_motor.py`
+
+---
+
+## Simulation scripts
+
+### Lift test
+
+```bash
+python3 -m sim.run_lift_actuators
+```
+
+### Steering test
+
+```bash
+python3 -m sim.run_steering_motors
+```
+
+### Wheel drive test
+
+```bash
+python3 -m sim.run_wheel_motors
+```
+
+---
+
+## Installation
+
+Create environment and install dependencies:
 
 ```bash
 python3 -m venv .venv
@@ -39,190 +184,62 @@ pip install -r requirements.txt
 
 ---
 
-## Step 3. Prepare the project structure
+## Telemetry
 
-Use this structure:
+Wheel drive telemetry includes:
 
-```text
-adaptive-wheel-base/
-├── robot_description/
-│   ├── urdf/
-│   │   └── mechatronic_wheel_urdf.urdf
-│   └── meshes/
-│       ├── Body.STL
-│       ├── Wheel_Leg_1.STL
-│       ├── Wheel_Arm_1.STL
-│       └── ...
-├── mujoco/
-│   ├── mjcf/
-│   │   └── robot.xml
-│   └── result.png
-├── tools/
-│   └── urdf_to_mjcf.py
-├── requirements.txt
-└── README.md
-```
+* voltage
+* current
+* angular velocity
+* torque
+
+These signals are buffered and plotted in real time.
+
+Implementation: `sim/telemetry.py`
 
 ---
 
-## Step 4. Add MuJoCo compiler settings to the URDF
+## Engineering notes
 
-Inside the root `<robot>` tag, add:
-
-```xml
-<mujoco>
-  <compiler
-    meshdir="../meshes"
-    discardvisual="false"
-    strippath="true"
-    fusestatic="false"/>
-</mujoco>
-```
+* Physics engine: **MuJoCo**
+* Main model format: **MJCF**
+* Lift control uses **bounded speed tracking**
+* Steering is controlled by an external **PID-like torque loop**
+* Wheel drive uses an **electromechanical DC motor model**
+* Current development focus: steering accuracy, turning behavior, and body leveling under asymmetric load
 
 ---
 
-## Step 5. Create the conversion script
+## GitHub cards
 
-Create `tools/urdf_to_mjcf.py`:
+### Stats + top languages
 
-```python
-from pathlib import Path
-import sys
-import mujoco
+<a href="https://github.com/Dcatik">
+  <img height="170" align="center" src="https://github-readme-stats.vercel.app/api?username=Dcatik&show_icons=true&theme=tokyonight" />
+</a>
+<a href="https://github.com/Dcatik?tab=repositories">
+  <img height="170" align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Dcatik&layout=compact&theme=tokyonight" />
+</a>
 
-src = Path(sys.argv[1]).resolve()
-dst = Path(sys.argv[2]).resolve()
+### Repository card
 
-spec = mujoco.MjSpec.from_file(str(src))
-spec.compile()
-
-dst.parent.mkdir(parents=True, exist_ok=True)
-dst.write_text(spec.to_xml(), encoding="utf-8")
-
-print(f"Saved MJCF to: {dst}")
-```
+<a href="https://github.com/Dcatik/adaptive-wheel-base">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=Dcatik&repo=adaptive-wheel-base&theme=tokyonight" />
+</a>
 
 ---
 
-## Step 6. Convert URDF to MJCF
+## Roadmap
 
-From the project root:
-
-```bash
-python tools/urdf_to_mjcf.py \
-  robot_description/urdf/mechatronic_wheel_urdf.urdf \
-  mujoco/mjcf/robot.xml
-```
-
-Expected result:
-
-```text
-mujoco/mjcf/robot.xml
-```
+* improve steering precision to within a small angular tolerance
+* stabilize turning in place
+* improve load distribution across lift modules
+* finalize body leveling control
+* clean up the fourth steering module geometry
+* add a more convenient operator interface
 
 ---
 
-## Step 7. Fix `meshdir` in the generated MJCF
+## License
 
-Open `mujoco/mjcf/robot.xml`.
-
-If it contains:
-
-```xml
-<compiler angle="radian" meshdir="../meshes/"/>
-```
-
-and your STL files are in `robot_description/meshes/`, change it to:
-
-```xml
-<compiler angle="radian" meshdir="../../robot_description/meshes" discardvisual="false"/>
-```
-
-Do not change the individual mesh lines such as:
-
-```xml
-<mesh name="Wheel_Leg_1" file="Wheel_Leg_1.STL"/>
-```
-
-Keep those unchanged.
-
----
-
-## Step 8. Open the model in MuJoCo Viewer
-
-Run:
-
-```bash
-python -m mujoco.viewer --mjcf=mujoco/mjcf/robot.xml
-```
-
-If the model loads, the conversion worked.
-
----
-
-## Step 9. Troubleshooting
-
-### Case 1. URDF file not found
-
-Check:
-
-```bash
-find . -maxdepth 4 \( -name "*.urdf" -o -name "*.xacro" \)
-```
-
-Use the real file path in the conversion command.
-
-### Case 2. STL file not found
-
-Check:
-
-```bash
-find . -iname "Wheel_Leg_1.STL"
-```
-
-Then correct `meshdir` so it points to the actual mesh folder.
-
-### Case 3. Linux filename mismatch
-
-Linux is case-sensitive. These are different:
-
-```text
-Wheel_Leg_1.STL
-wheel_leg_1.stl
-```
-
-Verify exact names:
-
-```bash
-find robot_description/meshes -iname "*.stl"
-```
-
----
-
-## Step 10. Save the final image
-
-Once the model is open in MuJoCo Viewer:
-
-1. Position the camera.
-2. Take a screenshot manually.
-3. Save it as:
-
-```text
-mujoco/result.png
-```
-
-Final expected result:
-
-```text
-adaptive-wheel-base/
-├── mujoco/
-│   ├── mjcf/
-│   │   └── robot.xml
-│   └── result.png
-```
-
----
-
-## Result
-
-![MuJoCo result](mujoco/result.png)
+MIT
