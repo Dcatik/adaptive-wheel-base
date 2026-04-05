@@ -1,27 +1,16 @@
-## setup
-- Установить зависимости
-- Настроить окружение
+# adaptive-wheel-base
 
-## build
-- Шаги сборки
+Монорепозиторий для стека:
+- Unity
+- MuJoCo
+- Gymnasium
+- MLOps pipeline
 
-## train
-- Как обучить модель
+## Setup
 
-## eval
-- Как провести оценку
+### Python environment
 
-## reproduce
-- Шаги для воспроизведения экспериментов
+Официальный способ поднятия Python-окружения:
 
-## dvc.yaml:
-- Описание зависимостей и данных для DVC.
-
-## params.yaml:
-- Структура конфигурации параметров для тренировки или настроек.
-
-## requirements.in:
-- Зависимости Python, которые должны быть установлены (через pip).
-
-## requirements.txt:
-- Заводим этот файл на основе requirements.in.
+```bash
+bash scripts/setup_python.sh

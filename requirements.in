@@ -1,0 +1,11 @@
+gymnasium
+mlagents_envs
+torch
+numpy
+hydra-core
+omegaconf
+mlflow
+dvc
+pytest
+pip-tools
+typeguard
