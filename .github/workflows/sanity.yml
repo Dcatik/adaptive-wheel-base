@@ -3,7 +3,7 @@ name: Repo Sanity
 on:
   push:
     branches:
-      - feat/unity-mujoco-gym-mlops
+      - feature/unity-mujoco-gym
   workflow_dispatch:
 
 jobs:
@@ -21,6 +21,7 @@ jobs:
           test -d sim
           test -d conf
           test -d scripts
+          test -d artifacts
           test -f README.md
 
       - name: Print tree
