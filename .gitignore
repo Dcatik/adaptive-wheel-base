@@ -20,3 +20,8 @@ Thumbs.db
 
 .venv/
 artifacts/scene_manifest_export/
+
+# Unity logs
+artifacts/unity_build_logs/
+artifacts/unity_builds/
+unity/mono_crash.mem.*.blob

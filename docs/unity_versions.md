@@ -9,6 +9,14 @@ Current Unity Editor version:
 - `6000.4.0f1`
 - revision: `8cf496087c8f`
 
+## Required Editor modules
+
+For Linux headless/server builds, the following Unity Editor module is required:
+- `Linux Dedicated Server Build Support`
+
+Installation path:
+- Unity Hub -> Installs -> Manage -> Add modules
+
 ## Locked package files
 
 Source of truth:
@@ -30,11 +38,13 @@ Current packages from `manifest.json`:
 - `com.unity.ugui` = `2.0.0`
 - `com.unity.visualscripting` = `1.9.10`
 
+
 ## Current status
 
 At this stage:
 - Unity Editor version is fixed.
 - Unity package graph is fixed.
+- Linux Dedicated Server Build Support is installed for Unity 6000.4.0f1.
 - MuJoCo Unity plug-in is not added yet.
 - ML-Agents package is not added yet.
 

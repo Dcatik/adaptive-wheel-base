@@ -87,6 +87,26 @@ jobs:
           print("Scene manifest export OK")
           PY
 
+  unity-build-script-check:
+    needs: sanity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Unity build sources exist
+        run: |
+          test -f scripts/build_unity.sh
+          test -f unity/Assets/Editor/BuildScripts.cs
+
+      - name: Check Unity build script content
+        run: |
+          grep -q 'BuildLinuxHeadless' unity/Assets/Editor/BuildScripts.cs
+          grep -q 'BuildLinuxVisual' unity/Assets/Editor/BuildScripts.cs
+          grep -q 'StandaloneBuildSubtarget.Server' unity/Assets/Editor/BuildScripts.cs
+          grep -q -- '-accept-apiupdate' scripts/build_unity.sh
+
   python-checks:
     needs: sanity
     runs-on: ubuntu-latest
