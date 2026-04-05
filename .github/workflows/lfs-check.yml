@@ -1,0 +1,81 @@
+name: LFS Check
+
+on:
+  push:
+    branches:
+      - feature/unity-mujoco-gym
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  lfs-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Show tracked files
+        run: |
+          echo "Tracked files:"
+          git ls-files | sort
+
+      - name: Check .gitattributes exists
+        run: test -f .gitattributes
+
+      - name: Check required LFS patterns
+        run: |
+          grep -q '^\*\.blend ' .gitattributes
+          grep -q '^\*\.fbx '   .gitattributes
+          grep -q '^\*\.obj '   .gitattributes
+          grep -q '^\*\.stl '   .gitattributes
+          grep -q '^\*\.png '   .gitattributes
+          grep -q '^\*\.jpg '   .gitattributes
+          grep -q '^\*\.exr '   .gitattributes
+          grep -q '^\*\.mp4 '   .gitattributes
+          grep -q '^\*\.pt '    .gitattributes
+          grep -q '^\*\.onnx '  .gitattributes
+          grep -q '^\*\.zip '   .gitattributes
+
+      - name: Install Git LFS
+        run: |
+          git lfs version
+          git lfs env
+
+      - name: List LFS files
+        run: |
+          git lfs ls-files || true
+
+      - name: Fail if large files are tracked by regular Git
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+          import sys
+
+          limit = 50 * 1024 * 1024
+          tracked = subprocess.check_output(
+              ["git", "ls-files", "-z"]
+          ).decode("utf-8", errors="replace").split("\0")
+
+          bad = []
+          for path in tracked:
+              if not path:
+                  continue
+              if os.path.isfile(path):
+                  size = os.path.getsize(path)
+                  if size > limit:
+                      bad.append((path, size))
+
+          if bad:
+              print("Files > 50 MiB tracked by regular Git:")
+              for path, size in bad:
+                  print(f"{path}: {size / (1024*1024):.1f} MiB")
+              sys.exit(1)
+
+          print("OK: no regular Git tracked files > 50 MiB")
+          PY

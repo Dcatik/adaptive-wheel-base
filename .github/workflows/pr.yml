@@ -3,8 +3,7 @@ name: PR Checks
 on:
   pull_request:
     branches:
-      - main
-      - develop
+      - feature/unity-mujoco-gym
   workflow_dispatch:
 
 jobs:
