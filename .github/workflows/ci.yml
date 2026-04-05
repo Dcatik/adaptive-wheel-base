@@ -119,8 +119,8 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ -d rl/tests ]; then
+          if find rl/tests -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
             pytest rl/tests -q
           else
-            echo "rl/tests not found, skipping"
+            echo "No pytest test files found, skipping"
           fi
