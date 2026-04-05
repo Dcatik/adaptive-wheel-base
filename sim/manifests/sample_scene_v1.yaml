@@ -1,0 +1,10 @@
+scene_id: sample_scene_v1
+unity_scene: Assets/Scenes/SampleScene.unity
+blender_source: null
+physics_profile: null
+visual_asset_hash: null
+collision_asset_hash: null
+camera_rig: default_camrig_v1
+reward_schema: pending
+obs_schema: pending
+build_target: linux_headless

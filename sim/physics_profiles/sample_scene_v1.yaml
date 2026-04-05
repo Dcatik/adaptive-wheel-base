@@ -1,0 +1,14 @@
+scene_id: sample_scene_v1
+
+floor:
+  friction_slide: 0.9
+  friction_torsion: 0.02
+  friction_roll: 0.002
+
+default_static:
+  static: true
+  collider: mesh
+
+default_dynamic:
+  dynamic: true
+  contact_enabled: true

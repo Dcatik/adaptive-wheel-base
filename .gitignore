@@ -19,3 +19,4 @@ unity/.vscode/
 Thumbs.db
 
 .venv/
+artifacts/scene_manifest_export/
