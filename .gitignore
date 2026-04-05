@@ -1,0 +1,21 @@
+# Unity generated
+unity/Library/
+unity/Logs/
+unity/Temp/
+unity/UserSettings/
+unity/Obj/
+unity/Build/
+unity/Builds/
+
+# Unity IDE/project files
+unity/*.csproj
+unity/*.sln
+unity/*.slnx
+unity/.vs/
+unity/.vscode/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+
+.venv/
