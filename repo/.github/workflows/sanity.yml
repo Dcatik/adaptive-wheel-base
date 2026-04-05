@@ -1,0 +1,30 @@
+name: Repo Sanity
+
+on:
+  push:
+    branches:
+      - feat/unity-mujoco-gym-mlops
+  workflow_dispatch:
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check repo layout
+        run: |
+          test -d unity
+          test -d rl
+          test -d sim
+          test -d conf
+          test -d scripts
+          test -f README.md
+
+      - name: Print tree
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
+          tree -L 2
