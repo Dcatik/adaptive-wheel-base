@@ -1,0 +1,126 @@
+name: CI Checks
+
+on:
+  push:
+    branches:
+      - main
+      - feature/unity-mujoco-gym
+  workflow_dispatch:
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check repo layout
+        run: |
+          test -d unity
+          test -d rl
+          test -d sim
+          test -d conf
+          test -d scripts
+          test -d artifacts
+          test -f README.md
+          test -f requirements.in
+          test -f requirements.txt
+          test -x scripts/setup_python.sh
+
+  scene-manifest-check:
+    needs: sanity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install pip-tools
+        run: python -m pip install pip-tools
+
+      - name: Sync dependencies
+        run: pip-sync requirements.txt
+
+      - name: Check scene manifest files exist
+        run: |
+          test -f sim/manifests/sample_scene_v1.yaml
+          test -f sim/physics_profiles/sample_scene_v1.yaml
+          test -f scripts/export_scene_manifest.py
+
+      - name: Export scene manifest
+        run: |
+          python scripts/export_scene_manifest.py
+          test -f artifacts/scene_manifest_export/sample_scene_v1.json
+
+      - name: Validate exported JSON fields
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("artifacts/scene_manifest_export/sample_scene_v1.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+
+          required = [
+              "manifest_path",
+              "physics_profile_path",
+              "manifest_file_hash",
+              "physics_profile_hash",
+              "scene_manifest_hash",
+          ]
+
+          for key in required:
+              assert key in data, f"Missing key: {key}"
+              assert data[key], f"Empty value: {key}"
+
+          print("Scene manifest export OK")
+          PY
+
+  python-checks:
+    needs: sanity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install pip-tools
+        run: python -m pip install pip-tools
+
+      - name: Sync dependencies
+        run: pip-sync requirements.txt
+
+      - name: Import smoke
+        run: python -c "import gymnasium, mlagents_envs, hydra, omegaconf, mlflow, torch, numpy"
+
+      - name: Check dependency integrity
+        run: pip check
+
+      - name: Run tests
+        run: |
+          if [ -d rl/tests ]; then
+            pytest rl/tests -q
+          else
+            echo "rl/tests not found, skipping"
+          fi
