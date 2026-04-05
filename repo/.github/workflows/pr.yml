@@ -1,0 +1,55 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  python-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install pip-tools
+        run: python -m pip install pip-tools
+
+      - name: Sync dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip-sync requirements.txt
+          else
+            echo "requirements.txt not found"
+            exit 1
+          fi
+
+      - name: Import smoke
+        run: python -c "import gymnasium, mlflow, hydra, torch"
+
+      - name: Run tests
+        run: |
+          if [ -d rl/tests ]; then
+            pytest rl/tests -q
+          else
+            echo "rl/tests not found, skipping"
+          fi
+
+      - name: Check repo layout
+        run: |
+          test -d unity
+          test -d rl
+          test -d sim
+          test -d conf
+          test -d scripts

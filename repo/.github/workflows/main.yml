@@ -1,0 +1,55 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Capture git SHA
+        run: echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install pip-tools
+        run: python -m pip install pip-tools
+
+      - name: Sync dependencies
+        run: pip-sync requirements.txt
+
+      - name: Export scene manifest
+        run: python scripts/export_scene_manifest.py
+
+      - name: Build Unity
+        run: bash scripts/build_unity.sh
+
+      - name: Smoke Unity
+        run: python scripts/smoke_unity.py
+
+      - name: Smoke LLAPI
+        run: python -m rl.utils.probe_llapi
+
+      - name: Smoke Env
+        run: python scripts/smoke_env.py
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-and-smoke-artifacts
+          path: |
+            artifacts/
+            sim/manifests/
